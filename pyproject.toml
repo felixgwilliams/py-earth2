@@ -1,0 +1,54 @@
+[build-system]
+requires = ["hatchling", "hatch-cython", "numpy >= 2.0", "cython >= 3.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "sklearn-contrib-py-earth"
+dynamic = ["version"]
+description = "A Python implementation of Jerome Friedman's Multivariate Adaptive Regression Splines."
+readme = "README.md"
+license = { file = "LICENSE.txt" }
+authors = [{ name = "Jason Rudy", email = "jcrudy@gmail.com" }]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX",
+    "Operating System :: Unix",
+    "Programming Language :: Cython",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Software Development",
+]
+dependencies = ["scikit-learn >= 0.16", "scipy >= 0.16", "six", "numpy>=1"]
+requires-python = ">=3.9"
+
+[project.optional-dependencies]
+all_tests = ["pandas", "patsy", "statsmodels", "sympy"]
+dev = ["cython"]
+docs = ["sphinx_gallery"]
+export = ["sympy"]
+
+
+[tool.hatch.version]
+path = "pyearth/__init__.py"
+
+[tool.hatch.build]
+
+
+[tool.hatch.build.targets.wheel]
+packages = ["pyearth"]
+
+
+[tool.hatch.build.targets.wheel.hooks.cython]
+dependencies = ["hatch-cython>=0.6.0rc0", "numpy>=2", "scipy"]
+
+[tool.hatch.build.targets.wheel.hooks.cython.options]
+include_numpy = true
+compile_py = false
+src = "pyearth"
