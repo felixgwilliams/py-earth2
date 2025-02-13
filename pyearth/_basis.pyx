@@ -3,13 +3,17 @@
 # cython: boundscheck = False
 # cython: wraparound = False
 # cython: profile = False
+# cython: language-level = 3str
 
 from ._util cimport log2, apply_weights_2d
 from libc.math cimport log
 from libc.math cimport abs
 cimport cython
-cdef FLOAT_t ZERO_TOL = 1e-16
-from _types import FLOAT
+cimport numpy as cnp
+from ._types cimport FLOAT_t
+# cdef FLOAT_t ZERO_TOL = 1e-16
+cdef cnp.float_t ZERO_TOL = 1e-16
+from ._types import FLOAT
 import numpy as np
 import sys
 import six

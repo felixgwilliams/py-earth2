@@ -7,7 +7,7 @@
 from ._record cimport PruningPassIteration
 from ._util cimport gcv, apply_weights_2d
 import numpy as np
-
+from scipy.linalg import lstsq
 from collections import defaultdict
 
 GCV, RSS, NB_SUBSETS = "gcv", "rss", "nb_subsets"
@@ -29,7 +29,7 @@ cdef class PruningPasser:
         self.sample_weight = sample_weight
         self.verbose = verbose
         self.basis = basis
-        self.B = np.empty(shape=(self.m, len(self.basis) + 1), dtype=np.float)
+        self.B = np.empty(shape=(self.m, len(self.basis) + 1), dtype=np.float64)
         self.penalty = kwargs.get('penalty', 3.0)
         if sample_weight.shape[1] == 1:
             y_avg = np.average(self.y, weights=sample_weight[:,0], axis=0)
@@ -96,7 +96,7 @@ cdef class PruningPasser:
                 self.basis.weighted_transform(X, missing, B, sample_weight[:, 0])
             else:
                 self.basis.weighted_transform(X, missing, B, sample_weight[:, p])
-            beta, mse_ = np.linalg.lstsq(B[:, 0:(basis_size)], weighted_y)[0:2]
+            beta, mse_ = lstsq(B[:, 0:(basis_size)], weighted_y)[0:2]
             if mse_:
                 pass
             else:
@@ -141,7 +141,7 @@ cdef class PruningPasser:
                     else:
                         weighted_y = y[:,p] * np.sqrt(sample_weight[:,p])
                         self.basis.weighted_transform(X, missing, B, sample_weight[:, p])
-                    beta, mse_ = np.linalg.lstsq(
+                    beta, mse_ = lstsq(
                         B[:, 0:pruned_basis_size], weighted_y)[0:2]
                     if mse_:
                         pass
