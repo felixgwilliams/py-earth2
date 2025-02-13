@@ -652,12 +652,11 @@ dependencies = [
 ]
 
 [package.optional-dependencies]
-all-tests = [
-    { name = "pandas" },
-    { name = "patsy" },
-    { name = "statsmodels" },
+export = [
     { name = "sympy" },
 ]
+
+[package.dev-dependencies]
 dev = [
     { name = "cython" },
 ]
@@ -667,28 +666,33 @@ docs = [
 export = [
     { name = "sympy" },
 ]
-
-[package.dev-dependencies]
 test = [
+    { name = "pandas" },
+    { name = "patsy" },
     { name = "pytest" },
+    { name = "statsmodels" },
+    { name = "sympy" },
 ]
 
 [package.metadata]
 requires-dist = [
-    { name = "cython", marker = "extra == 'dev'" },
     { name = "numpy", specifier = ">=1" },
-    { name = "pandas", marker = "extra == 'all-tests'" },
-    { name = "patsy", marker = "extra == 'all-tests'" },
     { name = "scikit-learn", specifier = ">=0.16" },
     { name = "scipy", specifier = ">=1" },
-    { name = "sphinx-gallery", marker = "extra == 'docs'" },
-    { name = "statsmodels", marker = "extra == 'all-tests'" },
-    { name = "sympy", marker = "extra == 'all-tests'" },
     { name = "sympy", marker = "extra == 'export'" },
 ]
 
 [package.metadata.requires-dev]
-test = [{ name = "pytest", specifier = ">=8.3.4" }]
+dev = [{ name = "cython", specifier = ">=3" }]
+docs = [{ name = "sphinx-gallery" }]
+export = [{ name = "sympy" }]
+test = [
+    { name = "pandas" },
+    { name = "patsy" },
+    { name = "pytest", specifier = ">=8.3.4" },
+    { name = "statsmodels" },
+    { name = "sympy" },
+]
 
 [[package]]
 name = "snowballstemmer"

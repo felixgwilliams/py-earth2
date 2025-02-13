@@ -29,9 +29,6 @@ dependencies = ["scikit-learn >= 0.16", "scipy >= 1", "numpy>=1"]
 requires-python = ">=3.10"
 
 [project.optional-dependencies]
-all_tests = ["pandas", "patsy", "statsmodels", "sympy"]
-dev = ["cython"]
-docs = ["sphinx_gallery"]
 export = ["sympy"]
 
 
@@ -54,6 +51,8 @@ compile_py = false
 src = "pyearth"
 
 [dependency-groups]
-test = [
-    "pytest>=8.3.4",
-]
+test = ["pytest>=8.3.4", "pandas", "patsy", "statsmodels", "sympy"]
+dev = ["cython>=3"]
+docs = ["sphinx_gallery"]
+export = ["sympy"]
+
