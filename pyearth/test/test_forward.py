@@ -1,26 +1,30 @@
-'''
+"""
 Created on Feb 16, 2013
 
 @author: jasonrudy
-'''
+"""
 
 import os
+
 import numpy
+from nose2.tools import assert_equal
 
-from nose.tools import assert_equal
-
+from pyearth._basis import (
+    Basis,
+    ConstantBasisFunction,
+    HingeBasisFunction,
+    LinearBasisFunction,
+)
 from pyearth._forward import ForwardPasser
-from pyearth._basis import (Basis, ConstantBasisFunction,
-                            HingeBasisFunction, LinearBasisFunction)
 from pyearth._types import BOOL
 
 numpy.random.seed(0)
 basis = Basis(10)
 constant = ConstantBasisFunction()
 basis.append(constant)
-bf1 = HingeBasisFunction(constant, 0.1, 10, 1, False, 'x1')
-bf2 = HingeBasisFunction(constant, 0.1, 10, 1, True, 'x1')
-bf3 = LinearBasisFunction(bf1, 2, 'x2')
+bf1 = HingeBasisFunction(constant, 0.1, 10, 1, False, "x1")
+bf2 = HingeBasisFunction(constant, 0.1, 10, 1, True, "x1")
+bf3 = LinearBasisFunction(bf1, 2, "x2")
 basis.append(bf1)
 basis.append(bf2)
 basis.append(bf3)
@@ -35,18 +39,15 @@ sample_weight = numpy.ones((X.shape[0], 1))
 
 
 def test_run():
-
-    forwardPasser = ForwardPasser(X, missing, y[:, numpy.newaxis],
-                                  sample_weight,
-                                  max_terms=1000, penalty=1)
+    forwardPasser = ForwardPasser(
+        X, missing, y[:, numpy.newaxis], sample_weight, max_terms=1000, penalty=1
+    )
 
     forwardPasser.run()
-    res = str(forwardPasser.get_basis()) + \
-        '\n' + str(forwardPasser.trace())
-    filename = os.path.join(os.path.dirname(__file__),
-                            'forward_regress.txt')
-#     with open(filename, 'w') as fl:
-#         fl.write(res)
-    with open(filename, 'r') as fl:
+    res = str(forwardPasser.get_basis()) + "\n" + str(forwardPasser.trace())
+    filename = os.path.join(os.path.dirname(__file__), "forward_regress.txt")
+    #     with open(filename, 'w') as fl:
+    #         fl.write(res)
+    with open(filename, "r") as fl:
         prev = fl.read()
     assert_equal(res, prev)

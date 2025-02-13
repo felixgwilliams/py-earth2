@@ -29,6 +29,6 @@ print(model.summary())
 # Plot the model
 y_hat = model.predict(X)
 plt.figure()
-plt.plot(X[:, 6], y, 'r.')
-plt.plot(X[:, 6], y_hat, 'b.')
+plt.plot(X[:, 6], y, "r.")
+plt.plot(X[:, 6], y_hat, "b.")
 plt.show()

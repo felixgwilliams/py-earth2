@@ -1,24 +1,20 @@
 import pickle
-import numpy
 
-from nose.tools import assert_equal
+import numpy
+from nose2.tools import assert_equal
+
+from pyearth._basis import ConstantBasisFunction, SmoothedHingeBasisFunction
+from pyearth._types import BOOL
 
 from .base import BaseContainer
-from pyearth._types import BOOL
-from pyearth._basis import SmoothedHingeBasisFunction, ConstantBasisFunction
 
 
 class Container(BaseContainer):
-
     def __init__(self):
         super(Container, self).__init__()
         self.parent = ConstantBasisFunction()
-        self.bf1 = SmoothedHingeBasisFunction(self.parent,
-                                              1.0, 0.0, 3.0, 10, 1,
-                                              False)
-        self.bf2 = SmoothedHingeBasisFunction(self.parent,
-                                              1.0, 0.0, 3.0, 10, 1,
-                                              True)
+        self.bf1 = SmoothedHingeBasisFunction(self.parent, 1.0, 0.0, 3.0, 10, 1, False)
+        self.bf2 = SmoothedHingeBasisFunction(self.parent, 1.0, 0.0, 3.0, 10, 1, True)
 
 
 def test_getters():
@@ -54,10 +50,10 @@ def test_degree():
 
 def test_p_r():
     cnt = Container()
-    pplus = (2 * 3.0 + 0.0 - 3 * 1.0) / ((3.0 - 0.0)**2)
-    rplus = (2 * 1.0 - 3.0 - 0.0) / ((3.0 - 0.0)**3)
-    pminus = (3 * 1.0 - 2 * 0.0 - 3.0) / ((0.0 - 3.0)**2)
-    rminus = (0.0 + 3.0 - 2 * 1.0) / ((0.0 - 3.0)**3)
+    pplus = (2 * 3.0 + 0.0 - 3 * 1.0) / ((3.0 - 0.0) ** 2)
+    rplus = (2 * 1.0 - 3.0 - 0.0) / ((3.0 - 0.0) ** 3)
+    pminus = (3 * 1.0 - 2 * 0.0 - 3.0) / ((0.0 - 3.0) ** 2)
+    rminus = (0.0 + 3.0 - 2 * 1.0) / ((0.0 - 3.0) ** 3)
     assert_equal(cnt.bf1.get_p(), pplus)
     assert_equal(cnt.bf1.get_r(), rplus)
     assert_equal(cnt.bf2.get_p(), pminus)
@@ -71,27 +67,22 @@ def test_apply():
     B = numpy.ones(shape=(m, 10))
     cnt.bf1.apply(cnt.X, missing, B[:, 0])
     cnt.bf2.apply(cnt.X, missing, B[:, 1])
-    pplus = (2 * 3.0 + 0.0 - 3 * 1.0) / ((3.0 - 0.0)**2)
-    rplus = (2 * 1.0 - 3.0 - 0.0) / ((3.0 - 0.0)**3)
-    pminus = (3 * 1.0 - 2 * 0.0 - 3.0) / ((0.0 - 3.0)**2)
-    rminus = (0.0 + 3.0 - 2 * 1.0) / ((0.0 - 3.0)**3)
+    pplus = (2 * 3.0 + 0.0 - 3 * 1.0) / ((3.0 - 0.0) ** 2)
+    rplus = (2 * 1.0 - 3.0 - 0.0) / ((3.0 - 0.0) ** 3)
+    pminus = (3 * 1.0 - 2 * 0.0 - 3.0) / ((0.0 - 3.0) ** 2)
+    rminus = (0.0 + 3.0 - 2 * 1.0) / ((0.0 - 3.0) ** 3)
     c1 = numpy.ones(m)
     c1[cnt.X[:, 1] <= 0.0] = 0.0
-    c1[(cnt.X[:, 1] > 0.0) & (cnt.X[:, 1] < 3.0)] = (
-        pplus * ((cnt.X[(cnt.X[:, 1] > 0.0) & (
-            cnt.X[:, 1] < 3.0), 1] - 0.0)**2) +
-        rplus * ((cnt.X[(cnt.X[:, 1] > 0.0) & (
-            cnt.X[:, 1] < 3.0), 1] - 0.0)**3))
+    c1[(cnt.X[:, 1] > 0.0) & (cnt.X[:, 1] < 3.0)] = pplus * (
+        (cnt.X[(cnt.X[:, 1] > 0.0) & (cnt.X[:, 1] < 3.0), 1] - 0.0) ** 2
+    ) + rplus * ((cnt.X[(cnt.X[:, 1] > 0.0) & (cnt.X[:, 1] < 3.0), 1] - 0.0) ** 3)
     c1[cnt.X[:, 1] >= 3.0] = cnt.X[cnt.X[:, 1] >= 3.0, 1] - 1.0
     c2 = numpy.ones(m)
     c2[cnt.X[:, 1] >= 3.0] = 0.0
     c2.flat[cnt.X[:, 1] <= 0.0] = -1 * (cnt.X[cnt.X[:, 1] <= 0.0] - 1.0)
-    c2[(cnt.X[:, 1] > 0.0) & (cnt.X[:, 1] < 3.0)] = (
-        pminus * ((cnt.X[(cnt.X[:, 1] > 0.0) &
-                         (cnt.X[:, 1] < 3.0), 1] - 3.0)**2) +
-        rminus * ((cnt.X[(cnt.X[:, 1] > 0.0) &
-                         (cnt.X[:, 1] < 3.0), 1] - 3.0)**3)
-    )
+    c2[(cnt.X[:, 1] > 0.0) & (cnt.X[:, 1] < 3.0)] = pminus * (
+        (cnt.X[(cnt.X[:, 1] > 0.0) & (cnt.X[:, 1] < 3.0), 1] - 3.0) ** 2
+    ) + rminus * ((cnt.X[(cnt.X[:, 1] > 0.0) & (cnt.X[:, 1] < 3.0), 1] - 3.0) ** 3)
     numpy.testing.assert_almost_equal(B[:, 0], c1)
     numpy.testing.assert_almost_equal(B[:, 1], c2)
 
@@ -100,48 +91,40 @@ def test_apply_deriv():
     cnt = Container()
     m, _ = cnt.X.shape
     missing = numpy.zeros_like(cnt.X, dtype=BOOL)
-    pplus = (2 * 3.0 + 0.0 - 3 * 1.0) / ((3.0 - 0.0)**2)
-    rplus = (2 * 1.0 - 3.0 - 0.0) / ((3.0 - 0.0)**3)
-    pminus = (3 * 1.0 - 2 * 0.0 - 3.0) / ((0.0 - 3.0)**2)
-    rminus = (0.0 + 3.0 - 2 * 1.0) / ((0.0 - 3.0)**3)
+    pplus = (2 * 3.0 + 0.0 - 3 * 1.0) / ((3.0 - 0.0) ** 2)
+    rplus = (2 * 1.0 - 3.0 - 0.0) / ((3.0 - 0.0) ** 3)
+    pminus = (3 * 1.0 - 2 * 0.0 - 3.0) / ((0.0 - 3.0) ** 2)
+    rminus = (0.0 + 3.0 - 2 * 1.0) / ((0.0 - 3.0) ** 3)
     c1 = numpy.ones(m)
     c1[cnt.X[:, 1] <= 0.0] = 0.0
-    c1[(cnt.X[:, 1] > 0.0) & (cnt.X[:, 1] < 3.0)] = (
-        pplus * ((cnt.X[(cnt.X[:, 1] > 0.0) &
-                        (cnt.X[:, 1] < 3.0), 1] - 0.0)**2) +
-        rplus * ((cnt.X[(cnt.X[:, 1] > 0.0) &
-                        (cnt.X[:, 1] < 3.0), 1] - 0.0)**3))
+    c1[(cnt.X[:, 1] > 0.0) & (cnt.X[:, 1] < 3.0)] = pplus * (
+        (cnt.X[(cnt.X[:, 1] > 0.0) & (cnt.X[:, 1] < 3.0), 1] - 0.0) ** 2
+    ) + rplus * ((cnt.X[(cnt.X[:, 1] > 0.0) & (cnt.X[:, 1] < 3.0), 1] - 0.0) ** 3)
     c1[cnt.X[:, 1] >= 3.0] = cnt.X[cnt.X[:, 1] >= 3.0, 1] - 1.0
     c2 = numpy.ones(m)
     c2[cnt.X[:, 1] >= 3.0] = 0.0
     c2.flat[cnt.X[:, 1] <= 0.0] = -1 * (cnt.X[cnt.X[:, 1] <= 0.0] - 1.0)
-    c2[(cnt.X[:, 1] > 0.0) & (cnt.X[:, 1] < 3.0)] = (
-        pminus * ((cnt.X[(cnt.X[:, 1] > 0.0) &
-                         (cnt.X[:, 1] < 3.0), 1] - 3.0)**2) +
-        rminus * ((cnt.X[(cnt.X[:, 1] > 0.0) &
-                         (cnt.X[:, 1] < 3.0), 1] - 3.0)**3)
-    )
+    c2[(cnt.X[:, 1] > 0.0) & (cnt.X[:, 1] < 3.0)] = pminus * (
+        (cnt.X[(cnt.X[:, 1] > 0.0) & (cnt.X[:, 1] < 3.0), 1] - 3.0) ** 2
+    ) + rminus * ((cnt.X[(cnt.X[:, 1] > 0.0) & (cnt.X[:, 1] < 3.0), 1] - 3.0) ** 3)
     b1 = numpy.empty(shape=m)
     j1 = numpy.empty(shape=m)
     b2 = numpy.empty(shape=m)
     j2 = numpy.empty(shape=m)
     cp1 = numpy.ones(m)
     cp1[cnt.X[:, 1] <= 0.0] = 0.0
-    cp1[(cnt.X[:, 1] > 0.0) & (cnt.X[:, 1] < 3.0)] = (
-        2.0 * pplus * ((cnt.X[(cnt.X[:, 1] > 0.0) &
-                              (cnt.X[:, 1] < 3.0), 1] - 0.0)) +
-        3.0 * rplus * ((cnt.X[(cnt.X[:, 1] > 0.0) &
-                              (cnt.X[:, 1] < 3.0), 1] - 0.0)**2)
-    )
+    cp1[(cnt.X[:, 1] > 0.0) & (cnt.X[:, 1] < 3.0)] = 2.0 * pplus * (
+        cnt.X[(cnt.X[:, 1] > 0.0) & (cnt.X[:, 1] < 3.0), 1] - 0.0
+    ) + 3.0 * rplus * ((cnt.X[(cnt.X[:, 1] > 0.0) & (cnt.X[:, 1] < 3.0), 1] - 0.0) ** 2)
     cp1[cnt.X[:, 1] >= 3.0] = 1.0
     cp2 = numpy.ones(m)
     cp2[cnt.X[:, 1] >= 3.0] = 0.0
     cp2[cnt.X[:, 1] <= 0.0] = -1.0
-    cp2[(cnt.X[:, 1] > 0.0) & (cnt.X[:, 1] < 3.0)] = (
-        2.0 * pminus * ((cnt.X[(cnt.X[:, 1] > 0.0) &
-                               (cnt.X[:, 1] < 3.0), 1] - 3.0)) +
-        3.0 * rminus * ((cnt.X[(cnt.X[:, 1] > 0.0) &
-                               (cnt.X[:, 1] < 3.0), 1] - 3.0)**2))
+    cp2[(cnt.X[:, 1] > 0.0) & (cnt.X[:, 1] < 3.0)] = 2.0 * pminus * (
+        cnt.X[(cnt.X[:, 1] > 0.0) & (cnt.X[:, 1] < 3.0), 1] - 3.0
+    ) + 3.0 * rminus * (
+        (cnt.X[(cnt.X[:, 1] > 0.0) & (cnt.X[:, 1] < 3.0), 1] - 3.0) ** 2
+    )
     cnt.bf1.apply_deriv(cnt.X, missing, b1, j1, 1)
     cnt.bf2.apply_deriv(cnt.X, missing, b2, j2, 1)
     numpy.testing.assert_almost_equal(b1, c1)

@@ -1,21 +1,25 @@
 import pickle
-import numpy
 
-from nose.tools import assert_equal, assert_true
+import numpy
+from nose2.tools import assert_equal, assert_true
+
+from pyearth._basis import (
+    ConstantBasisFunction,
+    HingeBasisFunction,
+    MissingnessBasisFunction,
+)
+from pyearth._types import BOOL
 
 from .base import BaseContainer
-from pyearth._types import BOOL
-from pyearth._basis import (
-    HingeBasisFunction, ConstantBasisFunction, MissingnessBasisFunction)
 
 
 class Container(BaseContainer):
-
     def __init__(self):
         super(Container, self).__init__()
         self.parent = ConstantBasisFunction()
         self.bf = MissingnessBasisFunction(self.parent, 1, True)
         self.child = HingeBasisFunction(self.bf, 1.0, 10, 1, False)
+
 
 #
 # def test_getters():
@@ -36,17 +40,11 @@ def test_apply():
     X = cnt.X.copy()
     X[1, 1] = None
     cnt.bf.apply(cnt.X, missing, B[:, 0])
-    numpy.testing.assert_almost_equal(
-        B[:, 0],
-        1 - missing[:, 1]
-    )
+    numpy.testing.assert_almost_equal(B[:, 0], 1 - missing[:, 1])
     cnt.child.apply(cnt.X, missing, B[:, 0])
     expected = (cnt.X[:, 1] - 1.0) * (cnt.X[:, 1] > 1.0)
     expected[1] = 0.0
-    numpy.testing.assert_almost_equal(
-        B[:, 0],
-        expected
-    )
+    numpy.testing.assert_almost_equal(B[:, 0], expected)
 
 
 # def test_apply_deriv():
@@ -72,6 +70,7 @@ def test_pickle_compatibility():
     cnt = Container()
     bf_copy = pickle.loads(pickle.dumps(cnt.bf))
     assert_true(cnt.bf == bf_copy)
+
 
 #
 # def test_smoothed_version():

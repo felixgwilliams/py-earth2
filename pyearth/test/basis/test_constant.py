@@ -1,15 +1,15 @@
 import pickle
-import numpy
 
-from nose.tools import assert_true, assert_false
+import numpy
+from nose2.tools import assert_false, assert_true
+
+from pyearth._basis import ConstantBasisFunction
+from pyearth._types import BOOL
 
 from .base import BaseContainer
-from pyearth._types import BOOL
-from pyearth._basis import ConstantBasisFunction
 
 
 class Container(BaseContainer):
-
     def __init__(self):
         super(Container, self).__init__()
         self.bf = ConstantBasisFunction()

@@ -1,15 +1,20 @@
 import pickle
-import numpy
 
-from nose.tools import assert_equal, assert_true
+import numpy
+from nose2.tools import assert_equal, assert_true
+
+from pyearth._basis import (
+    Basis,
+    ConstantBasisFunction,
+    HingeBasisFunction,
+    LinearBasisFunction,
+    SmoothedHingeBasisFunction,
+)
 
 from .base import BaseContainer
-from pyearth._basis import (HingeBasisFunction, SmoothedHingeBasisFunction,
-                            ConstantBasisFunction, LinearBasisFunction, Basis)
 
 
 class Container(BaseContainer):
-
     def __init__(self):
         super(Container, self).__init__()
         self.basis = Basis(self.X.shape[1])
@@ -31,8 +36,7 @@ def test_anova_decomp():
     cnt = Container()
     anova = cnt.basis.anova_decomp()
     assert_equal(set(anova[frozenset([1])]), set([cnt.bf1]))
-    assert_equal(set(anova[frozenset([2])]), set([cnt.bf2, cnt.bf4,
-                                                  cnt.bf5]))
+    assert_equal(set(anova[frozenset([2])]), set([cnt.bf2, cnt.bf4, cnt.bf5]))
     assert_equal(set(anova[frozenset([2, 3])]), set([cnt.bf3]))
     assert_equal(set(anova[frozenset()]), set([cnt.parent]))
     assert_equal(len(anova), 4)
@@ -45,7 +49,7 @@ def test_smooth_knots():
     knots = cnt.basis.smooth_knots(mins, maxes)
     assert_equal(knots[cnt.bf1], (0.0, 2.25))
     assert_equal(knots[cnt.bf2], (0.55, 1.25))
-    assert_equal(knots[cnt.bf3], (0.6,  1.5))
+    assert_equal(knots[cnt.bf3], (0.6, 1.5))
     assert_true(cnt.bf4 not in knots)
     assert_equal(knots[cnt.bf5], (1.25, 2.25))
 
@@ -62,10 +66,11 @@ def test_smooth():
         elif type(bf) is LinearBasisFunction:
             assert_true(type(smooth_bf) is LinearBasisFunction)
         else:
-            raise AssertionError('Basis function is of an unexpected type.')
-        assert_true(type(smooth_bf) in {SmoothedHingeBasisFunction,
-                                        ConstantBasisFunction,
-                                        LinearBasisFunction})
+            raise AssertionError("Basis function is of an unexpected type.")
+        assert_true(
+            type(smooth_bf)
+            in {SmoothedHingeBasisFunction, ConstantBasisFunction, LinearBasisFunction}
+        )
         if bf.has_knot():
             assert_equal(bf.get_knot(), smooth_bf.get_knot())
 

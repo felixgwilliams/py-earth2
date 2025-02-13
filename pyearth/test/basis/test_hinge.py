@@ -1,16 +1,19 @@
 import pickle
-import numpy
 
-from nose.tools import assert_equal, assert_true
+import numpy
+from nose2.tools import assert_equal, assert_true
+
+from pyearth._basis import (
+    ConstantBasisFunction,
+    HingeBasisFunction,
+    SmoothedHingeBasisFunction,
+)
+from pyearth._types import BOOL
 
 from .base import BaseContainer
-from pyearth._types import BOOL
-from pyearth._basis import (HingeBasisFunction, SmoothedHingeBasisFunction,
-                            ConstantBasisFunction)
 
 
 class Container(BaseContainer):
-
     def __init__(self):
         super(Container, self).__init__()
         self.parent = ConstantBasisFunction()
@@ -33,8 +36,7 @@ def test_apply():
     B = numpy.ones(shape=(m, 10))
     cnt.bf.apply(cnt.X, missing, B[:, 0])
     numpy.testing.assert_almost_equal(
-        B[:, 0],
-        (cnt.X[:, 1] - 1.0) * (cnt.X[:, 1] > 1.0)
+        B[:, 0], (cnt.X[:, 1] - 1.0) * (cnt.X[:, 1] > 1.0)
     )
 
 
@@ -45,10 +47,7 @@ def test_apply_deriv():
     b = numpy.empty(shape=m)
     j = numpy.empty(shape=m)
     cnt.bf.apply_deriv(cnt.X, missing, b, j, 1)
-    numpy.testing.assert_almost_equal(
-        (cnt.X[:, 1] - 1.0) * (cnt.X[:, 1] > 1.0),
-        b
-    )
+    numpy.testing.assert_almost_equal((cnt.X[:, 1] - 1.0) * (cnt.X[:, 1] > 1.0), b)
     numpy.testing.assert_almost_equal(1.0 * (cnt.X[:, 1] > 1.0), j)
 
 
@@ -65,10 +64,9 @@ def test_pickle_compatibility():
 
 def test_smoothed_version():
     cnt = Container()
-    knot_dict = {cnt.bf: (.5, 1.5)}
+    knot_dict = {cnt.bf: (0.5, 1.5)}
     translation = {cnt.parent: cnt.parent._smoothed_version(None, {}, {})}
-    smoothed = cnt.bf._smoothed_version(cnt.parent, knot_dict,
-                                        translation)
+    smoothed = cnt.bf._smoothed_version(cnt.parent, knot_dict, translation)
 
     assert_true(type(smoothed) is SmoothedHingeBasisFunction)
     assert_true(translation[cnt.parent] is smoothed.get_parent())
