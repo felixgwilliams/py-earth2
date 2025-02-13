@@ -16,10 +16,8 @@ cdef cnp.float_t ZERO_TOL = 1e-16
 from ._types import FLOAT
 import numpy as np
 import sys
-import six
 
-# Python 3 compatibility
-max_int = sys.maxint if six.PY2 else sys.maxsize
+max_int = sys.maxsize
 
 cdef class BasisFunction:
 

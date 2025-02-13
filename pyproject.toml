@@ -25,8 +25,8 @@ classifiers = [
     "Topic :: Scientific/Engineering",
     "Topic :: Software Development",
 ]
-dependencies = ["scikit-learn >= 0.16", "scipy >= 0.16", "six", "numpy>=1"]
-requires-python = ">=3.9"
+dependencies = ["scikit-learn >= 0.16", "scipy >= 1", "numpy>=1"]
+requires-python = ">=3.10"
 
 [project.optional-dependencies]
 all_tests = ["pandas", "patsy", "statsmodels", "sympy"]
