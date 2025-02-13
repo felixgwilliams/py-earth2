@@ -51,23 +51,24 @@ def export_sympy_term_expressions(earth_model):
 
     """
     from sympy import (
-        Symbol,
         Add,
-        Mul,
-        Max,
-        RealNumber,
-        Piecewise,
-        Pow,
         And,
         Function,
+        Max,
+        Mul,
         Not,
+        Piecewise,
+        Pow,
+        RealNumber,
+        Symbol,
     )
+
     from ._basis import (
-        LinearBasisFunction,
-        HingeBasisFunction,
-        SmoothedHingeBasisFunction,
-        MissingnessBasisFunction,
         ConstantBasisFunction,
+        HingeBasisFunction,
+        LinearBasisFunction,
+        MissingnessBasisFunction,
+        SmoothedHingeBasisFunction,
         VariableBasisFunction,
     )
 

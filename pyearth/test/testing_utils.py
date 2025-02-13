@@ -2,11 +2,12 @@ import importlib
 import importlib.util
 import os
 import sys
-from distutils.version import LooseVersion
+
+# from distutils.version import LooseVersion
 from functools import wraps
 
-from nose2 import SkipTest
-from nose2.tools import assert_almost_equal
+import pytest
+from numpy.testing import assert_almost_equal
 
 
 def if_environ_has(var_name):
@@ -17,7 +18,7 @@ def if_environ_has(var_name):
             if var_name in os.environ:
                 return func(*args, **kwargs)
             else:
-                raise SkipTest(
+                pytest.skip(
                     "Only run if %s environment variable is defined." % var_name
                 )
 
@@ -30,32 +31,32 @@ def if_platform_not_win_32(func):
     @wraps(func)
     def run_test(*args, **kwargs):
         if sys.platform == "win32":
-            raise SkipTest("Skip for 32 bit Windows platforms.")
+            pytest.skip("Skip for 32 bit Windows platforms.")
         else:
             return func(*args, **kwargs)
 
     return run_test
 
 
-def if_sklearn_version_greater_than_or_equal_to(min_version):
-    """
-    Test decorator that skips test unless sklearn version is greater than or
-    equal to min_version.
-    """
+# def if_sklearn_version_greater_than_or_equal_to(min_version):
+#     """
+#     Test decorator that skips test unless sklearn version is greater than or
+#     equal to min_version.
+#     """
 
-    def _if_sklearn_version(func):
-        @wraps(func)
-        def run_test(*args, **kwargs):
-            import sklearn
+#     def _if_sklearn_version(func):
+#         @wraps(func)
+#         def run_test(*args, **kwargs):
+#             import sklearn
 
-            if LooseVersion(sklearn.__version__) < LooseVersion(min_version):
-                raise SkipTest("sklearn version less than %s" % str(min_version))
-            else:
-                return func(*args, **kwargs)
+#             if LooseVersion(sklearn.__version__) < LooseVersion(min_version):
+#                 pytest.skip("sklearn version less than %s" % str(min_version))
+#             else:
+#                 return func(*args, **kwargs)
 
-        return run_test
+#         return run_test
 
-    return _if_sklearn_version
+#     return _if_sklearn_version
 
 
 def if_statsmodels(func):
@@ -64,7 +65,7 @@ def if_statsmodels(func):
     @wraps(func)
     def run_test(*args, **kwargs):
         if importlib.util.find_spec("statsmodels") is None:
-            raise SkipTest("statsmodels not available.")
+            pytest.skip("statsmodels not available.")
         else:
             return func(*args, **kwargs)
 
@@ -77,7 +78,7 @@ def if_pandas(func):
     @wraps(func)
     def run_test(*args, **kwargs):
         if importlib.util.find_spec("pandas") is None:
-            raise SkipTest("pandas not available.")
+            pytest.skip("pandas not available.")
         else:
             return func(*args, **kwargs)
 
@@ -90,7 +91,7 @@ def if_sympy(func):
     @wraps(func)
     def run_test(*args, **kwargs):
         if importlib.util.find_spec("sympy") is None:
-            raise SkipTest("sympy not available.")
+            pytest.skip("sympy not available.")
         else:
             return func(*args, **kwargs)
 
@@ -103,7 +104,7 @@ def if_patsy(func):
     @wraps(func)
     def run_test(*args, **kwargs):
         if importlib.util.find_spec("patsy") is None:
-            raise SkipTest("patsy not available.")
+            pytest.skip("patsy not available.")
         else:
             return func(*args, **kwargs)
 

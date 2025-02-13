@@ -52,3 +52,8 @@ dependencies = ["hatch-cython>=0.6.0rc0", "numpy>=2", "scipy"]
 include_numpy = true
 compile_py = false
 src = "pyearth"
+
+[dependency-groups]
+test = [
+    "pytest>=8.3.4",
+]

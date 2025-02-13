@@ -7,8 +7,8 @@ A simple example plotting a fit of the sine function and
 the derivatives computed by Earth.
 """
 
-import numpy
 import matplotlib.pyplot as plt
+import numpy
 
 from pyearth import Earth
 

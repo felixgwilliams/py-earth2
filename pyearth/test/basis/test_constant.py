@@ -1,11 +1,11 @@
 import pickle
 
 import numpy
-from nose2.tools import assert_false, assert_true
 
 from pyearth._basis import ConstantBasisFunction
 from pyearth._types import BOOL
 
+from . import assert_false, assert_true
 from .base import BaseContainer
 
 

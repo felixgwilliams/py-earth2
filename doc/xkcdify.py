@@ -16,15 +16,14 @@ on 2013-03-07
 
 """
 
-import numpy as np
-import pylab as pl
-from scipy import interpolate, signal
-import matplotlib.font_manager as fm
-
-
 # We need a special font for the code below.  It can be downloaded this way:
 import os
 import urllib
+
+import matplotlib.font_manager as fm
+import numpy as np
+import pylab as pl
+from scipy import interpolate, signal
 
 if not os.path.exists("Humor-Sans.ttf"):
     fhandle = urllib.urlopen(

@@ -1,6 +1,5 @@
 import numpy as np
-from nose2.tools import assert_equal
-from numpy.testing.utils import assert_almost_equal, assert_array_equal
+from numpy.testing import assert_almost_equal, assert_array_equal
 from scipy.linalg import lstsq, qr
 
 from pyearth._knot_search import (
@@ -13,6 +12,8 @@ from pyearth._knot_search import (
     SingleWeightDependentData,
     knot_search,
 )
+
+from . import assert_equal
 
 
 def test_outcome_dependent_data():

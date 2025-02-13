@@ -14,22 +14,22 @@ It has been modified to include an Earth based classifier.
 # License: BSD 3 clause
 # Modified to include pyearth by Jason Rudy
 
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 from matplotlib.colors import ListedColormap
 from sklearn.cross_validation import train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn.datasets import make_moons, make_circles, make_classification
+from sklearn.datasets import make_circles, make_classification, make_moons
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.lda import LDA
+from sklearn.linear_model.logistic import LogisticRegression
+from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.qda import QDA
 from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.naive_bayes import GaussianNB
-from sklearn.lda import LDA
-from sklearn.qda import QDA
 
-from sklearn.linear_model.logistic import LogisticRegression
-from sklearn.pipeline import Pipeline
 from pyearth.earth import Earth
 
 print(__doc__)

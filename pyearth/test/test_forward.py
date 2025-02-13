@@ -7,7 +7,6 @@ Created on Feb 16, 2013
 import os
 
 import numpy
-from nose2.tools import assert_equal
 
 from pyearth._basis import (
     Basis,
@@ -17,6 +16,8 @@ from pyearth._basis import (
 )
 from pyearth._forward import ForwardPasser
 from pyearth._types import BOOL
+
+from . import assert_equal
 
 numpy.random.seed(0)
 basis = Basis(10)

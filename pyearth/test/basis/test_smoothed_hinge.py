@@ -1,11 +1,11 @@
 import pickle
 
 import numpy
-from nose2.tools import assert_equal
 
 from pyearth._basis import ConstantBasisFunction, SmoothedHingeBasisFunction
 from pyearth._types import BOOL
 
+from . import assert_equal
 from .base import BaseContainer
 
 

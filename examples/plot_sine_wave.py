@@ -6,8 +6,8 @@ Plotting simple sine function
 A simple example plotting a fit of the sine function.
 """
 
-import numpy
 import matplotlib.pyplot as plt
+import numpy
 
 from pyearth import Earth
 

@@ -19,10 +19,10 @@ See [1], section 12.3 for more information about the criteria.
 
 """
 
-import numpy
 import matplotlib.pyplot as plt
-
+import numpy
 from sklearn.ensemble import RandomForestRegressor
+
 from pyearth import Earth
 
 # Create some fake data

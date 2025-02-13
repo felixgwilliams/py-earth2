@@ -8,8 +8,8 @@ A simple example returning a sympy expression describing the fit of a sine funct
 """
 
 import numpy
-from pyearth import Earth
-from pyearth import export
+
+from pyearth import Earth, export
 
 # Create some fake data
 numpy.random.seed(2)

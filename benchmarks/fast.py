@@ -1,6 +1,8 @@
-import numpy as np
-from pyearth import Earth
 from timeit import Timer
+
+import numpy as np
+
+from pyearth import Earth
 
 # The robot arm example, as defined in:
 # Fast MARS, Jerome H.Friedman, Technical Report No.110, May 1993, section 6.2.

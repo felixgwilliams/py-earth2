@@ -8,9 +8,6 @@ from ._forward import ForwardPasser
 from ._pruning import FEAT_IMP_CRITERIA, PruningPasser
 from ._types import BOOL
 from ._util import apply_weights_2d, ascii_table, gcv
-from ._version import get_versions
-
-__version__ = get_versions()["version"]
 
 
 class Earth(BaseEstimator, RegressorMixin, TransformerMixin):
@@ -347,7 +344,7 @@ class Earth(BaseEstimator, RegressorMixin, TransformerMixin):
         self.enable_pruning = enable_pruning
         self.feature_importance_type = feature_importance_type
         self.verbose = verbose
-        self._version = __version__
+        # self._version = __version__
 
     def __eq__(self, other):
         if self.__class__ is not other.__class__:
@@ -1134,7 +1131,7 @@ class Earth(BaseEstimator, RegressorMixin, TransformerMixin):
 
             coef, resid = lstsq(B, weighted_y[:, i])[0:2]
             self.coef_.append(coef)
-            if not resid:
+            if not resid.size:
                 resid = np.array([np.sum((np.dot(B, coef) - weighted_y[:, i]) ** 2)])
             resid_.append(resid)
         resid_ = np.array(resid_)

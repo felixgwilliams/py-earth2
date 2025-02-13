@@ -7,8 +7,9 @@ A simple example plotting a fit of the absolute value function.
 
 """
 
-import numpy
 import matplotlib.pyplot as plt
+import numpy
+
 from pyearth import Earth
 
 # Create some fake data

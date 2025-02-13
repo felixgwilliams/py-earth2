@@ -10,8 +10,9 @@ the outputs.
 
 """
 
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+
 from pyearth import Earth
 
 # Create some fake data

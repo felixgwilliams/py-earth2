@@ -1,7 +1,7 @@
-from pyearth._record import ForwardPassRecord, ForwardPassIteration
+from pyearth._record import ForwardPassIteration, ForwardPassRecord
 from pyearth._util import gcv
-from ..testing_utils import assert_list_almost_equal
 
+from ..testing_utils import assert_list_almost_equal
 
 num_samples = 1000
 num_variables = 10

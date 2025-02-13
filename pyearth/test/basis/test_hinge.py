@@ -1,7 +1,6 @@
 import pickle
 
 import numpy
-from nose2.tools import assert_equal, assert_true
 
 from pyearth._basis import (
     ConstantBasisFunction,
@@ -10,6 +9,7 @@ from pyearth._basis import (
 )
 from pyearth._types import BOOL
 
+from . import assert_equal, assert_true
 from .base import BaseContainer
 
 

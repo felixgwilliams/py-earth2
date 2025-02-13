@@ -8,8 +8,8 @@ redundant predictors, each of which has independent and random
 missingness.
 """
 
-import numpy
 import matplotlib.pyplot as plt
+import numpy
 
 from pyearth import Earth
 
