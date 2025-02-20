@@ -92,9 +92,11 @@ def test_updating_qr_with_linear_dependence():
     np.testing.assert_array_almost_equal(
         u.householder.V[:, : u.householder.k], u2.householder.V[:, : u2.householder.k]
     )
+    # only test the upper triangular of the T matrix, as the rest is unused and may
+    # be filled with uninitialized values due to use of np.empty
     np.testing.assert_array_almost_equal(
-        u.householder.T[: u.householder.k, : u.householder.k],
-        u2.householder.T[: u2.householder.k, : u2.householder.k],
+        np.triu(u.householder.T[: u.householder.k, : u.householder.k]),
+        np.triu(u2.householder.T[: u2.householder.k, : u2.householder.k]),
     )
 
     # u should have one more column than u2

@@ -55,4 +55,7 @@ test = ["pytest>=8.3.4", "pandas", "patsy", "statsmodels", "sympy"]
 dev = ["cython>=3"]
 docs = ["sphinx_gallery"]
 export = ["sympy"]
+nb = [
+    "ipykernel>=6.29.5",
+]
 
