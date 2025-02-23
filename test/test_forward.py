@@ -4,8 +4,6 @@ Created on Feb 16, 2013
 @author: jasonrudy
 """
 
-import os
-
 import numpy
 
 from pyearth._basis import (
@@ -17,7 +15,6 @@ from pyearth._basis import (
 from pyearth._forward import ForwardPasser
 from pyearth._types import BOOL
 
-from . import assert_equal
 
 numpy.random.seed(0)
 basis = Basis(10)
@@ -39,16 +36,11 @@ y[:] = numpy.dot(B, beta) + numpy.random.normal(size=100)
 sample_weight = numpy.ones((X.shape[0], 1))
 
 
-def test_run():
+def test_run(snapshot):
     forwardPasser = ForwardPasser(
         X, missing, y[:, numpy.newaxis], sample_weight, max_terms=1000, penalty=1
     )
 
     forwardPasser.run()
     res = str(forwardPasser.get_basis()) + "\n" + str(forwardPasser.trace())
-    filename = os.path.join(os.path.dirname(__file__), "forward_regress.txt")
-    #     with open(filename, 'w') as fl:
-    #         fl.write(res)
-    with open(filename, "r") as fl:
-        prev = fl.read()
-    assert_equal(res, prev)
+    res == snapshot
