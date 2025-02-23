@@ -79,7 +79,7 @@ class Earth(BaseEstimator, RegressorMixin, TransformerMixin):
     endspan : int, optional (default=-1)
         The number of extreme data values of each feature not eligible
         as knot locations. If endspan is set to -1 (default) then the
-        endspan parameter is calculated based on endspan_alpah (above).
+        endspan parameter is calculated based on endspan_alpha (above).
         If endspan is set to a positive integer then endspan_alpha is ignored.
 
 
@@ -633,7 +633,7 @@ class Earth(BaseEstimator, RegressorMixin, TransformerMixin):
                 if k not in FEAT_IMP_CRITERIA:
                     msg = (
                         "'{}' is not valid value for feature_importance, "
-                        "allowed critera are : {}".format(k, FEAT_IMP_CRITERIA)
+                        "allowed criteria are : {}".format(k, FEAT_IMP_CRITERIA)
                     )
                     raise ValueError(msg)
 

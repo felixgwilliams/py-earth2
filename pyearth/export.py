@@ -160,15 +160,15 @@ def export_sympy_term_expressions(earth_model):
         bf_var = bf.label
         return set([bf_var])
 
-    def non_missable(bf):
+    def non_miscible(bf):
         return set()
 
     bf_get_missables_dispatcher = {
-        LinearBasisFunction: non_missable,
-        SmoothedHingeBasisFunction: non_missable,
-        HingeBasisFunction: non_missable,
+        LinearBasisFunction: non_miscible,
+        SmoothedHingeBasisFunction: non_miscible,
+        HingeBasisFunction: non_miscible,
         MissingnessBasisFunction: missingness_bf_get_missables,
-        ConstantBasisFunction: non_missable,
+        ConstantBasisFunction: non_miscible,
     }
 
     def get_missables(bf):

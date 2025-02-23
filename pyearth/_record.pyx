@@ -73,7 +73,7 @@ cdef class PruningPassRecord(Record):
         self.penalty = penalty
         self.sst = sst
         self.iterations = [FirstPruningPassIteration(size, mse)]
-    
+
     def __reduce__(PruningPassRecord self):
         return (PruningPassRecord, (1, 1, 1.0, 1.0, 1, 1.0), self._getstate())
 
@@ -108,7 +108,7 @@ cdef class PruningPassRecord(Record):
 
     def __str__(PruningPassRecord self):
         return self.partial_str(slice(None))
-    
+
     def partial_str(PruningPassRecord self, rows, print_header=True, print_footer=True):
         result = ''
 #         result += 'Pruning Pass\n'
@@ -122,7 +122,7 @@ cdef class PruningPassRecord(Record):
         result += ascii_table(header, data, print_header, print_footer)
 #         result += '\nSelected iteration: ' + str(self.selected) + '\n'
         return result
-    
+
     def final_str(PruningPassRecord self):
         return 'Selected iteration: ' + str(self.selected)
 
@@ -137,7 +137,7 @@ cdef class ForwardPassRecord(Record):
         self.sst = sst
         self.iterations = [FirstForwardPassIteration(self.sst)]
         self.xlabels = xlabels
-    
+
     def __reduce__(ForwardPassRecord self):
         return (ForwardPassRecord, (self.num_samples, self.num_variables,
                                     self.penalty, self.sst, self.xlabels),
@@ -179,7 +179,7 @@ cdef class ForwardPassRecord(Record):
 #             self.stopping_condition,
 #             stopping_conditions[self.stopping_condition])
 #         return result
-    
+
     def partial_str(ForwardPassRecord self, rows, print_header=True, print_footer=True):
         header = ['iter', 'parent', 'var', 'knot',
                   'mse', 'terms', 'gcv', 'rsq', 'grsq']
@@ -201,7 +201,7 @@ cdef class ForwardPassRecord(Record):
         return 'Stopping Condition %d: %s' % (
             self.stopping_condition,
             stopping_conditions[self.stopping_condition])
-        
+
 cdef class Iteration:
 
     def __richcmp__(self, other, method):

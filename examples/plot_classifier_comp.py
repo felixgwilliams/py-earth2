@@ -10,7 +10,7 @@ It has been modified to include an Earth based classifier.
 
 # Code source: Gael Varoqueux
 #              Andreas Mueller
-# Modified for Documentation merge by Jaques Grobler
+# Modified for Documentation merge by Jacques Grobler
 # License: BSD 3 clause
 # Modified to include pyearth by Jason Rudy
 

@@ -86,7 +86,7 @@ cpdef ascii_table(header, data, print_header=True, print_footer=True):
             result += '\n'
         for j, item in enumerate(row):
             result += str_pad(item, column_widths[j]) + ' '
-        
+
     if print_footer:
         result += '\n'
         for j, col_width in enumerate(column_widths):
