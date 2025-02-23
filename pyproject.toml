@@ -34,7 +34,7 @@ dev = ["build>=1.2.2.post1", "cython>=3"]
 docs = ["sphinx_gallery"]
 export = ["sympy"]
 nb = ["ipykernel>=6.29.5"]
-ci = ["ruff>=0.9.7"]
+lint = ["ruff>=0.9.7"]
 
 [tool.ruff]
 target-version = "py310"
@@ -76,6 +76,6 @@ src = "pyearth"
 
 [tool.cibuildwheel]
 build-frontend = "build[uv]"
-skip = ["pp*"]
+skip = ["pp*", "*-i686", "*-win32", "*-ppc64le", "*-s390x", "*-armv7l"] # no pypi, no 32-bit
 test-groups = ["test"]
 test-command = "pytest {project}/test"
