@@ -1,5 +1,10 @@
 [build-system]
-requires = ["hatchling", "hatch-cython", "numpy >= 2.0", "cython >= 3.0"]
+requires = [
+    "hatchling",
+    "hatch-cython",
+    "numpy >= 2.0",  # extensions compiled against numpy 2 work with numpy 1
+    "cython >= 3.0",
+]
 build-backend = "hatchling.build"
 
 [project]
@@ -31,11 +36,19 @@ requires-python = ">=3.10"
 [project.optional-dependencies]
 export = ["sympy"]
 
+[dependency-groups]
+test = ["pytest", "pandas", "patsy", "statsmodels", "sympy"]
+dev = ["build>=1.2.2.post1", "cython>=3"]
+docs = ["sphinx_gallery"]
+export = ["sympy"]
+nb = ["ipykernel>=6.29.5"]
+
 
 [tool.hatch.version]
 path = "pyearth/__init__.py"
 
 [tool.hatch.build]
+packages = ["pyearth"]
 
 
 [tool.hatch.build.targets.wheel]
@@ -43,19 +56,15 @@ packages = ["pyearth"]
 
 
 [tool.hatch.build.targets.wheel.hooks.cython]
-dependencies = ["hatch-cython>=0.6.0rc0", "numpy>=2", "scipy"]
+dependencies = ["hatch-cython", "numpy>=2", "scipy"]
 
 [tool.hatch.build.targets.wheel.hooks.cython.options]
 include_numpy = true
 compile_py = false
 src = "pyearth"
 
-[dependency-groups]
-test = ["pytest>=8.3.4", "pandas", "patsy", "statsmodels", "sympy"]
-dev = ["cython>=3"]
-docs = ["sphinx_gallery"]
-export = ["sympy"]
-nb = [
-    "ipykernel>=6.29.5",
-]
-
+[tool.cibuildwheel]
+build-frontend = "build[uv]"
+skip = ["pp*"]
+test-groups = ["test"]
+test-command = "pytest {project}/test"
