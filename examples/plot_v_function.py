@@ -7,6 +7,8 @@ A simple example plotting a fit of the absolute value function.
 
 """
 
+from __future__ import annotations
+
 import matplotlib.pyplot as plt
 import numpy
 

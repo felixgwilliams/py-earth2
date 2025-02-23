@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import numpy
 
 numpy.random.seed(0)

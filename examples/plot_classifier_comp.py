@@ -13,6 +13,7 @@ It has been modified to include an Earth based classifier.
 # Modified for Documentation merge by Jacques Grobler
 # License: BSD 3 clause
 # Modified to include pyearth by Jason Rudy
+from __future__ import annotations
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -39,9 +40,7 @@ h = 0.02  # step size in the mesh
 np.random.seed(1)
 
 # Combine Earth with LogisticRegression in a pipeline to do classification
-earth_classifier = Pipeline(
-    [("earth", Earth(max_degree=3, penalty=1.5)), ("logistic", LogisticRegression())]
-)
+earth_classifier = Pipeline([("earth", Earth(max_degree=3, penalty=1.5)), ("logistic", LogisticRegression())])
 
 names = [
     "Nearest Neighbors",
@@ -66,9 +65,7 @@ classifiers = [
     earth_classifier,
 ]
 
-X, y = make_classification(
-    n_features=2, n_redundant=0, n_informative=2, random_state=1, n_clusters_per_class=1
-)
+X, y = make_classification(n_features=2, n_redundant=0, n_informative=2, random_state=1, n_clusters_per_class=1)
 rng = np.random.RandomState(2)
 X += 2 * rng.uniform(size=X.shape)
 linearly_separable = (X, y)
@@ -107,7 +104,7 @@ for ds in datasets:
     i += 1
 
     # iterate over classifiers
-    for name, clf in zip(names, classifiers):
+    for name, clf in zip(names, classifiers, strict=False):
         ax = plt.subplot(len(datasets), len(classifiers) + 1, i)
         clf.fit(X_train, y_train)
         score = clf.score(X_test, y_test)

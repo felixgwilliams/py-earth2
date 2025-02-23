@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import pickle
 
 import numpy
@@ -122,9 +124,7 @@ def test_apply_deriv():
     cp2[cnt.X[:, 1] <= 0.0] = -1.0
     cp2[(cnt.X[:, 1] > 0.0) & (cnt.X[:, 1] < 3.0)] = 2.0 * pminus * (
         cnt.X[(cnt.X[:, 1] > 0.0) & (cnt.X[:, 1] < 3.0), 1] - 3.0
-    ) + 3.0 * rminus * (
-        (cnt.X[(cnt.X[:, 1] > 0.0) & (cnt.X[:, 1] < 3.0), 1] - 3.0) ** 2
-    )
+    ) + 3.0 * rminus * ((cnt.X[(cnt.X[:, 1] > 0.0) & (cnt.X[:, 1] < 3.0), 1] - 3.0) ** 2)
     cnt.bf1.apply_deriv(cnt.X, missing, b1, j1, 1)
     cnt.bf2.apply_deriv(cnt.X, missing, b2, j2, 1)
     numpy.testing.assert_almost_equal(b1, c1)

@@ -8,6 +8,8 @@ redundant predictors, each of which has independent and random
 missingness.
 """
 
+from __future__ import annotations
+
 import matplotlib.pyplot as plt
 import numpy
 

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import importlib
 import importlib.util
 import os
@@ -18,9 +20,7 @@ def if_environ_has(var_name):
             if var_name in os.environ:
                 return func(*args, **kwargs)
             else:
-                pytest.skip(
-                    "Only run if %s environment variable is defined." % var_name
-                )
+                pytest.skip("Only run if %s environment variable is defined." % var_name)
 
         return run_test
 
@@ -112,7 +112,7 @@ def if_patsy(func):
 
 
 def assert_list_almost_equal(list1, list2):
-    for el1, el2 in zip(list1, list2):
+    for el1, el2 in zip(list1, list2, strict=False):
         assert_almost_equal(el1, el2)
 
 

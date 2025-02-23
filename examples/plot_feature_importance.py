@@ -19,6 +19,8 @@ See [1], section 12.3 for more information about the criteria.
 
 """
 
+from __future__ import annotations
+
 import matplotlib.pyplot as plt
 import numpy
 from sklearn.ensemble import RandomForestRegressor
@@ -70,6 +72,8 @@ for crit in criteria:
     plt.title(crit)
     plt.ylabel("importances")
     idx += 1
-title = "$x_0,...x_9 \sim \mathcal{N}(0, 1)$\n$y= 10sin(\pi x_{0}x_{1}) + 20(x_2 - 0.5)^2 + 10x_3 + 5x_4 + Unif(0, 1)$"
+title = (
+    "$x_0,...x_9 \\sim \\mathcal{N}(0, 1)$\n$y= 10sin(\\pi x_{0}x_{1}) + 20(x_2 - 0.5)^2 + 10x_3 + 5x_4 + Unif(0, 1)$"
+)
 fig.suptitle(title, fontsize="x-large")
 plt.show()

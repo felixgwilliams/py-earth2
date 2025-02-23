@@ -6,6 +6,8 @@ Plotting two simple sine functions
 A simple example plotting a fit of two sine functions.
 """
 
+from __future__ import annotations
+
 import matplotlib.pyplot as plt
 import numpy
 

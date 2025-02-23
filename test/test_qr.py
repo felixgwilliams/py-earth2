@@ -4,6 +4,8 @@ Created on Jan 28, 2016
 @author: jason
 """
 
+from __future__ import annotations
+
 import numpy as np
 from scipy.linalg import lstsq
 
@@ -89,9 +91,7 @@ def test_updating_qr_with_linear_dependence():
     np.testing.assert_array_almost_equal(X_hat, X)
 
     # u and u2 should have the same householder
-    np.testing.assert_array_almost_equal(
-        u.householder.V[:, : u.householder.k], u2.householder.V[:, : u2.householder.k]
-    )
+    np.testing.assert_array_almost_equal(u.householder.V[:, : u.householder.k], u2.householder.V[:, : u2.householder.k])
     # only test the upper triangular of the T matrix, as the rest is unused and may
     # be filled with uninitialized values due to use of np.empty
     np.testing.assert_array_almost_equal(

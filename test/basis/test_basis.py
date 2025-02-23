@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import pickle
 
 import numpy
@@ -58,7 +60,7 @@ def test_smooth():
     cnt = Container()
     X = numpy.random.uniform(-2.0, 4.0, size=(20, 4))
     smooth_basis = cnt.basis.smooth(X)
-    for bf, smooth_bf in zip(cnt.basis, smooth_basis):
+    for bf, smooth_bf in zip(cnt.basis, smooth_basis, strict=False):
         if type(bf) is HingeBasisFunction:
             assert_true(type(smooth_bf) is SmoothedHingeBasisFunction)
         elif type(bf) is ConstantBasisFunction:
@@ -67,10 +69,7 @@ def test_smooth():
             assert_true(type(smooth_bf) is LinearBasisFunction)
         else:
             raise AssertionError("Basis function is of an unexpected type.")
-        assert_true(
-            type(smooth_bf)
-            in {SmoothedHingeBasisFunction, ConstantBasisFunction, LinearBasisFunction}
-        )
+        assert_true(type(smooth_bf) in {SmoothedHingeBasisFunction, ConstantBasisFunction, LinearBasisFunction})
         if bf.has_knot():
             assert_equal(bf.get_knot(), smooth_bf.get_knot())
 

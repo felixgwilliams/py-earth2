@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from pyearth._record import PruningPassIteration, PruningPassRecord
 from pyearth._util import gcv
 
@@ -23,10 +25,7 @@ def test_statistics():
     rsqs = [record.rsq(i) for i in range(len(record))]
     rsqs_ = [1 - (mses[i] / sst) for i in range(len(record))]
     grsqs = [record.grsq(i) for i in range(len(record))]
-    grsqs_ = [
-        1 - (record.gcv(i) / gcv(sst, 1, num_samples, penalty))
-        for i in range(len(record))
-    ]
+    grsqs_ = [1 - (record.gcv(i) / gcv(sst, 1, num_samples, penalty)) for i in range(len(record))]
     assert_list_almost_equal(mses, mses_)
     assert_list_almost_equal(gcvs, gcvs_)
     assert_list_almost_equal(rsqs, rsqs_)

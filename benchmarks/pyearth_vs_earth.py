@@ -6,6 +6,8 @@ dimensions, n, the number of forward pass iterations, the runtime, and the
 r^2 statistic for each fit and writes the result to a CSV file.
 """
 
+from __future__ import annotations
+
 import time
 
 import numpy
@@ -82,7 +84,7 @@ class RandomComplexityGenerator(DataGenerator):
         B[:, 0] += coef[0]
         for i in range(1, num_terms):
             degree = numpy.random.randint(1, self.max_degree)
-            for bf in range(degree):
+            for _bf in range(degree):
                 knot = numpy.random.normal()
                 dir = 1 - 2 * numpy.random.binomial(1, 0.5)
                 var = numpy.random.randint(0, self.n)
@@ -156,14 +158,10 @@ def compare(generator_class, sample_sizes, dimensions, repetitions, **kwargs):
                 print(n, m, rep)
                 X, y = generator.generate(m=m)
                 y_pred_r, time_r, iter_r = run_earth(X, y, **kwargs)
-                rsq_r = 1 - (numpy.sum((y - y_pred_r) ** 2)) / (
-                    numpy.sum((y - numpy.mean(y)) ** 2)
-                )
+                rsq_r = 1 - (numpy.sum((y - y_pred_r) ** 2)) / (numpy.sum((y - numpy.mean(y)) ** 2))
                 data.append([m, n, 0, 1, time_r, iter_r, rsq_r])
                 y_pred_py, time_py, iter_py = run_pyearth(X, y, **kwargs)
-                rsq_py = 1 - (numpy.sum((y - y_pred_py) ** 2)) / (
-                    numpy.sum((y - numpy.mean(y)) ** 2)
-                )
+                rsq_py = 1 - (numpy.sum((y - y_pred_py) ** 2)) / (numpy.sum((y - numpy.mean(y)) ** 2))
                 data.append([m, n, 1, 0, time_py, iter_py, rsq_py])
     return pandas.DataFrame(data, columns=header)
 

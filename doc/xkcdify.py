@@ -17,6 +17,8 @@ on 2013-03-07
 """
 
 # We need a special font for the code below.  It can be downloaded this way:
+from __future__ import annotations
+
 import os
 import urllib
 
@@ -26,9 +28,7 @@ import pylab as pl
 from scipy import interpolate, signal
 
 if not os.path.exists("Humor-Sans.ttf"):
-    fhandle = urllib.urlopen(
-        "https://github.com/shreyankg/xkcd-desktop/raw/master/Humor-Sans.ttf"
-    )
+    fhandle = urllib.urlopen("https://github.com/shreyankg/xkcd-desktop/raw/master/Humor-Sans.ttf")
     open("Humor-Sans.ttf", "wb").write(fhandle.read())
 
 
@@ -167,12 +167,8 @@ def XKCDify(
         yaxis_loc = xlim[0]
 
     # Draw axes
-    xaxis = pl.Line2D(
-        [xax_lim[0], xax_lim[1]], [xaxis_loc, xaxis_loc], linestyle="-", color="k"
-    )
-    yaxis = pl.Line2D(
-        [yaxis_loc, yaxis_loc], [yax_lim[0], yax_lim[1]], linestyle="-", color="k"
-    )
+    xaxis = pl.Line2D([xax_lim[0], xax_lim[1]], [xaxis_loc, xaxis_loc], linestyle="-", color="k")
+    yaxis = pl.Line2D([yaxis_loc, yaxis_loc], [yax_lim[0], yax_lim[1]], linestyle="-", color="k")
 
     # Label axes3, 0.5, 'hello', fontsize=14)
     ax.text(

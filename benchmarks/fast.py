@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from timeit import Timer
 
 import numpy as np
@@ -42,9 +44,7 @@ hp = dict(
 model_normal = Earth(**hp)
 t = Timer(lambda: model_normal.fit(inputs, outputs))
 duration_normal = t.timeit(number=1)
-print(
-    "Normal : MSE={0:.5f}, duration={1:.2f}s".format(model_normal.mse_, duration_normal)
-)
+print("Normal : MSE={0:.5f}, duration={1:.2f}s".format(model_normal.mse_, duration_normal))
 model_fast = Earth(use_fast=True, fast_K=5, fast_h=1, **hp)
 
 t = Timer(lambda: model_fast.fit(inputs, outputs))

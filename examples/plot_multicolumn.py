@@ -8,6 +8,8 @@ There are two redundant predictors, each of which has independent and random
 missingness.
 """
 
+from __future__ import annotations
+
 import matplotlib.pyplot as plt
 import numpy
 
@@ -19,12 +21,8 @@ m = 10000
 n = 10
 X = 80 * numpy.random.uniform(size=(m, n)) - 40
 X[:, 5] = X[:, 6] + numpy.random.normal(0, 0.1, m)
-y1 = 100 * (numpy.sin((X[:, 5] + X[:, 6]) / 20) - 4.0) + 10 * numpy.random.normal(
-    size=m
-)
-y2 = 100 * (numpy.cos((X[:, 5] + X[:, 6]) / 20) - 4.0) + 10 * numpy.random.normal(
-    size=m
-)
+y1 = 100 * (numpy.sin((X[:, 5] + X[:, 6]) / 20) - 4.0) + 10 * numpy.random.normal(size=m)
+y2 = 100 * (numpy.cos((X[:, 5] + X[:, 6]) / 20) - 4.0) + 10 * numpy.random.normal(size=m)
 y = numpy.concatenate([y1[:, None], y2[:, None]], axis=1)
 missing = numpy.random.binomial(1, 0.2, (m, n)).astype(bool)
 X_full = X.copy()

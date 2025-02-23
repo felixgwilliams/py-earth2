@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+
 def export_python_function(earth_model):
     """
     Exports model as a pure python function, with no numpy/scipy/sklearn dependencies.
@@ -12,9 +15,7 @@ def export_python_function(earth_model):
             i += 1
 
     def func(example_iterator):
-        return [
-            sum(accessor(row) for accessor in accessors) for row in example_iterator
-        ]
+        return [sum(accessor(row) for accessor in accessors) for row in example_iterator]
 
     return func
 
@@ -230,9 +231,7 @@ def export_sympy(earth_model, columns=None):
         n_cols = coefs.shape[0]
 
     # Combine coefficients with terms for each output column
-    result = [
-        sum([coefs[i][j] * term for j, term in enumerate(terms)]) for i in range(n_cols)
-    ]
+    result = [sum([coefs[i][j] * term for j, term in enumerate(terms)]) for i in range(n_cols)]
 
     if unwrap:
         # Result should be an expression rather than a list of expressions.

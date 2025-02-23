@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import numpy as np
 from numpy.testing import assert_almost_equal, assert_array_equal
 from scipy.linalg import lstsq, qr
@@ -32,7 +34,7 @@ def test_outcome_dependent_data():
         B[:, k] = b
         code = weight.update_from_array(b)
         if k >= 99:
-            1 + 1
+            pass
         data.update()
         assert_equal(code, 0)
         assert_almost_equal(
@@ -122,9 +124,7 @@ def generate_problem(m, q, r, n_outcomes, shared_weight):
     B = np.random.normal(size=(m, q))
     p = B[:, 1]
     knot = x[int(m / 2)]
-    candidates = np.array(
-        sorted([knot] + list(x[np.random.randint(low=0, high=m, size=r - 1)]))
-    )[::-1]
+    candidates = np.array(sorted([knot] + list(x[np.random.randint(low=0, high=m, size=r - 1)])))[::-1]
 
     # These data need to be generated for each outcome
     outcomes = []
@@ -188,9 +188,7 @@ def test_knot_search():
     assert_equal(len(outcomes), n_outcomes)
 
     # Run fast knot search and compare results to slow knot search
-    fast_best_knot, fast_best_k, fast_best_e = knot_search(
-        data, candidates, p, q, m, r, len(outcomes), 0
-    )
+    fast_best_knot, fast_best_k, fast_best_e = knot_search(data, candidates, p, q, m, r, len(outcomes), 0)
     assert_almost_equal(fast_best_knot, best_knot)
     assert_equal(candidates[fast_best_k], candidates[best_k])
     assert_almost_equal(fast_best_e, best_e)

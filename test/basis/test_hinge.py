@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import pickle
 
 import numpy
@@ -35,9 +37,7 @@ def test_apply():
     missing = numpy.zeros_like(cnt.X, dtype=BOOL)
     B = numpy.ones(shape=(m, 10))
     cnt.bf.apply(cnt.X, missing, B[:, 0])
-    numpy.testing.assert_almost_equal(
-        B[:, 0], (cnt.X[:, 1] - 1.0) * (cnt.X[:, 1] > 1.0)
-    )
+    numpy.testing.assert_almost_equal(B[:, 0], (cnt.X[:, 1] - 1.0) * (cnt.X[:, 1] > 1.0))
 
 
 def test_apply_deriv():

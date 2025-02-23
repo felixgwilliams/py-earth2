@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import numpy
 from numpy.testing import assert_almost_equal
 
@@ -40,7 +42,7 @@ def test_export_python_function():
     for smooth in (True, False):
         model = Earth(penalty=1, smooth=smooth, max_degree=2).fit(X, y)
         export_model = export_python_function(model)
-        for exp_pred, model_pred in zip(model.predict(X), export_model(X)):
+        for exp_pred, model_pred in zip(model.predict(X), export_model(X), strict=False):
             assert_almost_equal(exp_pred, model_pred)
 
 

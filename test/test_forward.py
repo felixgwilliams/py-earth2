@@ -4,6 +4,8 @@ Created on Feb 16, 2013
 @author: jasonrudy
 """
 
+from __future__ import annotations
+
 import numpy
 
 from pyearth._basis import (
@@ -14,7 +16,6 @@ from pyearth._basis import (
 )
 from pyearth._forward import ForwardPasser
 from pyearth._types import BOOL
-
 
 numpy.random.seed(0)
 basis = Basis(10)
@@ -37,10 +38,8 @@ sample_weight = numpy.ones((X.shape[0], 1))
 
 
 def test_run(snapshot):
-    forwardPasser = ForwardPasser(
-        X, missing, y[:, numpy.newaxis], sample_weight, max_terms=1000, penalty=1
-    )
+    forwardPasser = ForwardPasser(X, missing, y[:, numpy.newaxis], sample_weight, max_terms=1000, penalty=1)
 
     forwardPasser.run()
     res = str(forwardPasser.get_basis()) + "\n" + str(forwardPasser.trace())
-    res == snapshot
+    assert res == snapshot

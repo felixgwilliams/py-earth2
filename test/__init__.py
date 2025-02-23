@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+
 def assert_equal(x, y):
     assert x == y
 

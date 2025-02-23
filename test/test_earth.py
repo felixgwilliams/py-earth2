@@ -4,6 +4,8 @@ Created on Feb 24, 2013
 @author: jasonrudy
 """
 
+from __future__ import annotations
+
 import copy
 import os
 import pickle
@@ -146,10 +148,7 @@ def test_sample_weight():
     model = Earth().fit(x[:, numpy.newaxis], y, sample_weight=sample_weight)
 
     # Check that the model fits better for the more heavily weighted group
-    assert_true(
-        model.score(x[group], y[group])
-        < model.score(x[numpy.logical_not(group)], y[numpy.logical_not(group)])
-    )
+    assert_true(model.score(x[group], y[group]) < model.score(x[numpy.logical_not(group)], y[numpy.logical_not(group)]))
 
     # Make sure that the score function gives the same answer as the trace
     pruning_trace = model.pruning_trace()
@@ -181,9 +180,7 @@ def test_output_weight():
     mse = ((model.predict(x) - y) ** 2).mean(axis=0)
     group1_mean = mse[group].mean()
     group2_mean = mse[numpy.logical_not(group)].mean()
-    assert_true(
-        group1_mean > group2_mean or round(abs(group1_mean - group2_mean), 7) == 0
-    )
+    assert_true(group1_mean > group2_mean or round(abs(group1_mean - group2_mean), 7) == 0)
 
 
 def test_missing_data():
@@ -284,9 +281,7 @@ def test_score():
 def test_pathological_cases():
     import pandas
 
-    directory = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)), "pathological_data"
-    )
+    directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), "pathological_data")
     cases = {
         "issue_44": {},
         "issue_50": {
@@ -327,7 +322,7 @@ def test_pandas_compatibility():
 
     earth = Earth(**default_params)
     model = earth.fit(X_df, y_df)
-    colnames == model.forward_trace()._getstate()["xlabels"]
+    assert all(colnames == model.forward_trace()._getstate()["xlabels"])
 
 
 @if_patsy
@@ -341,12 +336,10 @@ def test_patsy_compatibility():
     colnames = ["xx" + str(i) for i in range(X.shape[1])]
     X_df.columns = colnames
     X_df["y"] = y
-    y_df, X_df = patsy.dmatrices(
-        "y ~ xx0 + xx1 + xx2 + xx3 + xx4 + xx5 + xx6 + xx7 + xx8 + xx9 - 1", data=X_df
-    )
+    y_df, X_df = patsy.dmatrices("y ~ xx0 + xx1 + xx2 + xx3 + xx4 + xx5 + xx6 + xx7 + xx8 + xx9 - 1", data=X_df)
 
     model = Earth(**default_params).fit(X_df, y_df)
-    colnames == model.forward_trace()._getstate()["xlabels"]
+    assert all(colnames == model.forward_trace()._getstate()["xlabels"])
 
 
 def test_pickle_compatibility():
@@ -554,9 +547,7 @@ def test_fast():
     earth = Earth(max_terms=10, max_degree=5, **default_params)
     earth.fit(X, y)
     normal_summary = earth.summary()
-    earth = Earth(
-        use_fast=True, max_terms=10, max_degree=5, fast_K=10, fast_h=1, **default_params
-    )
+    earth = Earth(use_fast=True, max_terms=10, max_degree=5, fast_K=10, fast_h=1, **default_params)
     earth.fit(X, y)
     fast_summary = earth.summary()
     assert_equal(normal_summary, fast_summary)
@@ -572,7 +563,7 @@ def test_feature_importance():
     earth.fit(X, y)
     assert type(earth.feature_importances_) is dict
     assert set(earth.feature_importances_.keys()) == set(criteria)
-    for crit, val in earth.feature_importances_.items():
+    for _crit, val in earth.feature_importances_.items():
         assert len(val) == X.shape[1]
     with pytest.raises(ValueError):
         Earth(feature_importance_type="bad_name", **default_params).fit(X, y)
@@ -582,6 +573,4 @@ def test_feature_importance():
     assert len(earth.feature_importances_) == X.shape[1]
 
     with pytest.raises(ValueError):
-        Earth(
-            feature_importance_type="rss", enable_pruning=False, **default_params
-        ).fit(X, y)
+        Earth(feature_importance_type="rss", enable_pruning=False, **default_params).fit(X, y)

@@ -7,6 +7,8 @@ A simple example returning a sympy expression describing the fit of a sine funct
 
 """
 
+from __future__ import annotations
+
 import numpy
 
 from pyearth import Earth, export

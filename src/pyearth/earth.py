@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import numpy as np
 from scipy import sparse
 from scipy.linalg import lstsq
@@ -418,9 +420,7 @@ class Earth(BaseEstimator, RegressorMixin, TransformerMixin):
         # Check for sparseness
         if sparse.issparse(X):
             raise TypeError(
-                "A sparse matrix was passed, but dense data "
-                "is required. Use X.toarray() to convert to "
-                "dense."
+                "A sparse matrix was passed, but dense data is required. Use X.toarray() to convert to dense."
             )
         X = np.asarray(X, dtype=np.float64, order="F")
 
@@ -434,11 +434,10 @@ class Earth(BaseEstimator, RegressorMixin, TransformerMixin):
         if not self.allow_missing:
             try:
                 assert_all_finite(X)
-            except ValueError:
+            except ValueError as e:
                 raise ValueError(
-                    "Input contains NaN, infinity or a value that's too large."
-                    "Did you mean to set allow_missing=True?"
-                )
+                    "Input contains NaN, infinity or a value that's too large.Did you mean to set allow_missing=True?"
+                ) from e
         if X.ndim == 1:
             X = X[:, np.newaxis]
 
@@ -470,9 +469,7 @@ class Earth(BaseEstimator, RegressorMixin, TransformerMixin):
         # Check for sparseness
         if sparse.issparse(y):
             raise TypeError(
-                "A sparse matrix was passed, but dense data "
-                "is required. Use y.toarray() to convert to "
-                "dense."
+                "A sparse matrix was passed, but dense data is required. Use y.toarray() to convert to dense."
             )
         if sparse.issparse(sample_weight):
             raise TypeError(
@@ -547,7 +544,7 @@ class Earth(BaseEstimator, RegressorMixin, TransformerMixin):
         output_weight=None,
         missing=None,
         xlabels=None,
-        linvars=[],
+        linvars=None,
     ):
         """
         Fit an Earth model to the input data X and y.
@@ -612,14 +609,13 @@ class Earth(BaseEstimator, RegressorMixin, TransformerMixin):
 
         """
         # Format and label the data
+        if linvars is None:
+            linvars = []
         if xlabels is None:
             self.xlabels_ = self._scrape_labels(X)
         else:
             if len(xlabels) != X.shape[1]:
-                raise ValueError(
-                    "The length of xlabels is not the "
-                    "same as the number of columns of X"
-                )
+                raise ValueError("The length of xlabels is not the same as the number of columns of X")
             self.xlabels_ = xlabels
         if self.feature_importance_type is not None:
             feature_importance_type = self.feature_importance_type
@@ -631,9 +627,8 @@ class Earth(BaseEstimator, RegressorMixin, TransformerMixin):
                 feature_importance_type = [feature_importance_type]
             for k in feature_importance_type:
                 if k not in FEAT_IMP_CRITERIA:
-                    msg = (
-                        "'{}' is not valid value for feature_importance, "
-                        "allowed criteria are : {}".format(k, FEAT_IMP_CRITERIA)
+                    msg = "'{}' is not valid value for feature_importance, allowed criteria are : {}".format(
+                        k, FEAT_IMP_CRITERIA
                     )
                     raise ValueError(msg)
 
@@ -645,9 +640,7 @@ class Earth(BaseEstimator, RegressorMixin, TransformerMixin):
                 )
 
         self.linvars_ = linvars
-        X, y, sample_weight, output_weight, missing = self._scrub(
-            X, y, sample_weight, output_weight, missing
-        )
+        X, y, sample_weight, output_weight, missing = self._scrub(X, y, sample_weight, output_weight, missing)
 
         # Do the actual work
         self.forward_pass(
@@ -661,9 +654,7 @@ class Earth(BaseEstimator, RegressorMixin, TransformerMixin):
             skip_scrub=True,
         )
         if self.enable_pruning is True:
-            self.pruning_pass(
-                X, y, sample_weight, output_weight, missing, skip_scrub=True
-            )
+            self.pruning_pass(X, y, sample_weight, output_weight, missing, skip_scrub=True)
         if hasattr(self, "smooth") and self.smooth:
             self.basis_ = self.basis_.smooth(X)
         self.linear_fit(X, y, sample_weight, output_weight, missing, skip_scrub=True)
@@ -700,7 +691,7 @@ class Earth(BaseEstimator, RegressorMixin, TransformerMixin):
         output_weight=None,
         missing=None,
         xlabels=None,
-        linvars=[],
+        linvars=None,
         skip_scrub=False,
     ):
         """
@@ -768,20 +759,18 @@ class Earth(BaseEstimator, RegressorMixin, TransformerMixin):
 
         """
         # Label and format data
+        if linvars is None:
+            linvars = []
         if xlabels is None:
             self.xlabels_ = self._scrape_labels(X)
         else:
             self.xlabels_ = xlabels
         if not skip_scrub:
-            X, y, sample_weight, output_weight, missing = self._scrub(
-                X, y, sample_weight, output_weight, missing
-            )
+            X, y, sample_weight, output_weight, missing = self._scrub(X, y, sample_weight, output_weight, missing)
 
         # Do the actual work
         args = self._pull_forward_args(**self.__dict__)
-        forward_passer = ForwardPasser(
-            X, missing, y, sample_weight, xlabels=self.xlabels_, linvars=linvars, **args
-        )
+        forward_passer = ForwardPasser(X, missing, y, sample_weight, xlabels=self.xlabels_, linvars=linvars, **args)
         forward_passer.run()
         self.forward_pass_record_ = forward_passer.trace()
         self.basis_ = forward_passer.get_basis()
@@ -846,9 +835,7 @@ class Earth(BaseEstimator, RegressorMixin, TransformerMixin):
         """
         # Format data
         if not skip_scrub:
-            X, y, sample_weight, output_weight, missing = self._scrub(
-                X, y, sample_weight, output_weight, missing
-            )
+            X, y, sample_weight, output_weight, missing = self._scrub(X, y, sample_weight, output_weight, missing)
 
         #         if sample_weight.shape[1] == 1 and y.shape[1] != 1:
         #             sample_weight = np.repeat(sample_weight,y.shape[1],axis=1)
@@ -857,9 +844,7 @@ class Earth(BaseEstimator, RegressorMixin, TransformerMixin):
         args = self._pull_pruning_args(**self.__dict__)
 
         # Do the actual work
-        pruning_passer = PruningPasser(
-            self.basis_, X, missing, y, sample_weight, **args
-        )
+        pruning_passer = PruningPasser(self.basis_, X, missing, y, sample_weight, **args)
         pruning_passer.run()
 
         imp = pruning_passer.feature_importance
@@ -977,10 +962,7 @@ class Earth(BaseEstimator, RegressorMixin, TransformerMixin):
         for bf in self.basis_:
             data.append(
                 [str(bf), "Yes" if bf.is_pruned() else "No"]
-                + [
-                    "%g" % self.coef_[c, i] if not bf.is_pruned() else "None"
-                    for c in range(self.coef_.shape[0])
-                ]
+                + ["%g" % self.coef_[c, i] if not bf.is_pruned() else "None" for c in range(self.coef_.shape[0])]
             )
             if not bf.is_pruned():
                 i += 1
@@ -1012,18 +994,13 @@ class Earth(BaseEstimator, RegressorMixin, TransformerMixin):
         result = ""
         if self._feature_importances_dict:
             max_label_length = max(map(len, self.xlabels_)) + 5
-            result += (
-                max_label_length * " "
-                + "    ".join(self._feature_importances_dict.keys())
-                + "\n"
-            )
+            result += max_label_length * " " + "    ".join(self._feature_importances_dict.keys()) + "\n"
             labels = np.array(self.xlabels_)
             if sort_by:
                 if sort_by not in self._feature_importances_dict.keys():
                     raise ValueError(
                         "Invalid feature importance type name "
-                        "to sort with : %s, available : %s"
-                        % (sort_by, self._feature_importances_dict.keys())
+                        "to sort with : %s, available : %s" % (sort_by, self._feature_importances_dict.keys())
                     )
                 imp = self._feature_importances_dict[sort_by]
                 indices = np.argsort(imp)[::-1]
@@ -1096,9 +1073,7 @@ class Earth(BaseEstimator, RegressorMixin, TransformerMixin):
         """
         # Format data
         if not skip_scrub:
-            X, y, sample_weight, output_weight, missing = self._scrub(
-                X, y, sample_weight, output_weight, missing
-            )
+            X, y, sample_weight, output_weight, missing = self._scrub(X, y, sample_weight, output_weight, missing)
 
         #         if sample_weight.shape[1]:
         #             sample_weight = np.repeat(sample_weight,y.shape[1],axis=1)
@@ -1260,14 +1235,10 @@ class Earth(BaseEstimator, RegressorMixin, TransformerMixin):
                 else:
                     variables_of_interest.append(self.xlabels_.index(var))
         X, missing = self._scrub_x(X, missing)
-        J = np.zeros(
-            shape=(X.shape[0], len(variables_of_interest), self.coef_.shape[0])
-        )
+        J = np.zeros(shape=(X.shape[0], len(variables_of_interest), self.coef_.shape[0]))
         b = np.empty(shape=X.shape[0])
         j = np.empty(shape=X.shape[0])
-        self.basis_.transform_deriv(
-            X, missing, b, j, self.coef_, J, variables_of_interest, True
-        )
+        self.basis_.transform_deriv(X, missing, b, j, self.coef_, J, variables_of_interest, True)
         return J
 
     def score(
@@ -1334,9 +1305,7 @@ class Earth(BaseEstimator, RegressorMixin, TransformerMixin):
         """
         check_is_fitted(self, "basis_")
         if not skip_scrub:
-            X, y, sample_weight, output_weight, missing = self._scrub(
-                X, y, sample_weight, output_weight, missing
-            )
+            X, y, sample_weight, output_weight, missing = self._scrub(X, y, sample_weight, output_weight, missing)
         if sample_weight.shape[1] == 1 and y.shape[1] > 1:
             sample_weight = np.repeat(sample_weight, y.shape[1], axis=1)
         y_hat = self.predict(X)
@@ -1392,9 +1361,7 @@ class Earth(BaseEstimator, RegressorMixin, TransformerMixin):
                  (the score can be negative).
 
         """
-        X, y, sample_weight, output_weight, missing = self._scrub(
-            X, y, None, None, missing
-        )
+        X, y, sample_weight, output_weight, missing = self._scrub(X, y, None, None, missing)
         y_hat = self.predict(X, missing=missing)
         residual = 1 - (y - y_hat) ** 2 / y**2
         return residual

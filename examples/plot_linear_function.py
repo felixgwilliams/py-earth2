@@ -7,6 +7,8 @@ Fitting a pyearth model to a linear function shows that pyearth
 will automatically  choose a linear basis function in some cases.
 """
 
+from __future__ import annotations
+
 import matplotlib.pyplot as plt
 import numpy as np
 
