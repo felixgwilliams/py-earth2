@@ -3,7 +3,7 @@ requires = ["hatchling", "hatch-cython", "numpy >= 2.0", "cython >= 3.0"]
 build-backend = "hatchling.build"
 
 [project]
-name = "sklearn-contrib-py-earth"
+name = "py-earth2"
 dynamic = ["version"]
 description = "A Python implementation of Jerome Friedman's Multivariate Adaptive Regression Splines."
 readme = "README.md"
