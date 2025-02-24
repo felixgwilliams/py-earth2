@@ -93,6 +93,7 @@ skip = [
     "*-ppc64le",
     "*-s390x",
     "*-armv7l",
-] # no pypi, no 32-bit
+    "*-musllinux*",
+] # no pypi, no 32-bit, no musl
 test-groups = ["test"]
 test-command = "pytest {project}/test"
