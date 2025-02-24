@@ -100,5 +100,6 @@ jobs:
           pattern: cibw-*
           merge-multiple: true
           path: dist
+      - run: ls -R dist
       - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
