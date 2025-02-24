@@ -29,7 +29,16 @@ requires-python = ">=3.10"
 export = ["sympy"]
 
 [dependency-groups]
-test = ["pytest", "pandas", "patsy", "statsmodels", "sympy", "syrupy"]
+test = [
+    "pytest",
+    "pandas",
+    "patsy",
+    "statsmodels",
+    "sympy",
+    "syrupy",
+    "pytest-cov",
+    "pytest-clarity",
+]
 dev = ["build>=1.2.2.post1", "cython>=3"]
 docs = ["sphinx_gallery"]
 export = ["sympy"]
@@ -76,6 +85,13 @@ src = "pyearth"
 
 [tool.cibuildwheel]
 build-frontend = "build[uv]"
-skip = ["pp*", "*-i686", "*-win32", "*-ppc64le", "*-s390x", "*-armv7l"] # no pypi, no 32-bit
+skip = [
+    "pp*",
+    "*-i686",
+    "*-win32",
+    "*-ppc64le",
+    "*-s390x",
+    "*-armv7l",
+] # no pypi, no 32-bit
 test-groups = ["test"]
 test-command = "pytest {project}/test"
