@@ -88,6 +88,7 @@ build-frontend = "build[uv]"
 skip = [
     "pp*",
     "*-i686",
+    "*_i686",
     "*-win32",
     "*-ppc64le",
     "*-s390x",
