@@ -9,8 +9,12 @@ In each run, different weights are given to
 the outputs.
 
 """
-import numpy as np
+
+from __future__ import annotations
+
 import matplotlib.pyplot as plt
+import numpy as np
+
 from pyearth import Earth
 
 # Create some fake data
@@ -31,12 +35,14 @@ k = 1
 fig = plt.figure(figsize=(10, 15))
 for i, alpha in enumerate(alphas):
     # Fit an Earth model
-    model = Earth(max_degree=5,
-                  minspan_alpha=.05,
-                  endspan_alpha=.05,
-                  max_terms=10,
-                  check_every=1,
-                  thresh=0.)
+    model = Earth(
+        max_degree=5,
+        minspan_alpha=0.05,
+        endspan_alpha=0.05,
+        max_terms=10,
+        check_every=1,
+        thresh=0.0,
+    )
     output_weight = np.array([alpha, 1 - alpha])
     model.fit(X, y_mix, output_weight=output_weight)
     print(model.summary())
@@ -47,12 +53,12 @@ for i, alpha in enumerate(alphas):
     mse = ((y_hat - y_mix) ** 2).mean(axis=0)
     ax = plt.subplot(n_plots, 2, k)
     ax.set_ylabel("Run {0}".format(i + 1), rotation=0, labelpad=20)
-    plt.plot(X[:, 6], y_mix[:, 0], 'r.')
-    plt.plot(X[:, 6], model.predict(X)[:, 0], 'b.')
+    plt.plot(X[:, 6], y_mix[:, 0], "r.")
+    plt.plot(X[:, 6], model.predict(X)[:, 0], "b.")
     plt.title("MSE: {0:.3f}, Weight : {1:.1f}".format(mse[0], alpha))
     plt.subplot(n_plots, 2, k + 1)
-    plt.plot(X[:, 5], y_mix[:, 1], 'r.')
-    plt.plot(X[:, 5], model.predict(X)[:, 1], 'b.')
+    plt.plot(X[:, 5], y_mix[:, 1], "r.")
+    plt.plot(X[:, 5], model.predict(X)[:, 1], "b.")
     plt.title("MSE: {0:.3f}, Weight : {1:.1f}".format(mse[1], 1 - alpha))
     k += 2
 plt.tight_layout()

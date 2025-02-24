@@ -7,8 +7,11 @@ A simple example plotting a fit of the absolute value function.
 
 """
 
-import numpy
+from __future__ import annotations
+
 import matplotlib.pyplot as plt
+import numpy
+
 from pyearth import Earth
 
 # Create some fake data
@@ -29,6 +32,6 @@ print(model.summary())
 # Plot the model
 y_hat = model.predict(X)
 plt.figure()
-plt.plot(X[:, 6], y, 'r.')
-plt.plot(X[:, 6], y_hat, 'b.')
+plt.plot(X[:, 6], y, "r.")
+plt.plot(X[:, 6], y_hat, "b.")
 plt.show()
