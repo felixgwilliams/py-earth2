@@ -55,7 +55,7 @@ jobs:
         uses: astral-sh/setup-uv@v5
       - name: Get package version
         id: get-version
-        run: echo "NEW_VERSION=$(uv tool run hatchling version)" >> $GIHTUB_ENV
+        run: echo "NEW_VERSION=$(uv tool run -q  hatchling version)" | xargs >> $GITHUB_ENV
 
       - name: check matches
         run: |
