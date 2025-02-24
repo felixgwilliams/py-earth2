@@ -322,7 +322,7 @@ def test_pandas_compatibility():
 
     earth = Earth(**default_params)
     model = earth.fit(X_df, y_df)
-    assert all(colnames == model.forward_trace()._getstate()["xlabels"])
+    assert numpy.all(colnames == model.forward_trace()._getstate()["xlabels"])
 
 
 @if_patsy
@@ -339,7 +339,7 @@ def test_patsy_compatibility():
     y_df, X_df = patsy.dmatrices("y ~ xx0 + xx1 + xx2 + xx3 + xx4 + xx5 + xx6 + xx7 + xx8 + xx9 - 1", data=X_df)
 
     model = Earth(**default_params).fit(X_df, y_df)
-    assert all(colnames == model.forward_trace()._getstate()["xlabels"])
+    assert numpy.all(colnames == model.forward_trace()._getstate()["xlabels"])
 
 
 def test_pickle_compatibility():
