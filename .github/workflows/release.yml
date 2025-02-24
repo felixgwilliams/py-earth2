@@ -59,7 +59,7 @@ jobs:
 
       - name: check matches
         run: |
-          if [ "$NEW_VERSION" != "${{ inputs.tag }}" ]; then
+          if [ "v$NEW_VERSION" != "${{ inputs.tag }}" ]; then
             echo "package version $NEW_VERSION does not match tag ${{ inputs.tag }}" >&2
             exit 1;
           else
