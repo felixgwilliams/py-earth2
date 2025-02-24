@@ -97,7 +97,7 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with:
-          pattern: wheels-*
+          pattern: cibw-*
           merge-multiple: true
           path: dist
       - name: Publish package distributions to PyPI
