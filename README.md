@@ -1,8 +1,12 @@
 # py-earth2
 
-This project is copied from [py-earth](https://github.com/scikit-learn-contrib/py-earth), which has been archived since December 2023 and is licensed under BSD-3-Clause Copyright (c) 2013, Jason Rudy
+This project is copied from [py-earth](https://github.com/scikit-learn-contrib/py-earth), which has been archived since December 2023 and is licensed under BSD-3-Clause Copyright (c) 2013, Jason Rudy.
 
 The original README can be found in [`README-original.md`](README-original.md)
+
+A Python implementation of Jerome Friedman's Multivariate Adaptive Regression Splines algorithm,
+in the style of scikit-learn. The py-earth package implements Multivariate Adaptive Regression Splines using Cython and provides an interface that is compatible with scikit-learn's Estimator, Predictor, Transformer, and Model interfaces.  For more information about
+Multivariate Adaptive Regression Splines, see the references below.
 
 ---
 
@@ -37,4 +41,4 @@ pyplot.xlabel('x_6')
 pyplot.ylabel('y')
 pyplot.title('Simple Earth Example')
 pyplot.show()
- ```
+```
